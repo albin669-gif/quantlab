@@ -12,11 +12,11 @@ import {
   Tooltip, 
   CartesianGrid 
 } from 'recharts';
-import { Activity } from 'lucide-react';
+import { Activity, Sparkles } from 'lucide-react';
 import { PricePoint } from '../types';
 
 export const QuantAnalytics: React.FC = () => {
-  const { selectedAssetId, selectedAsset } = useApp();
+  const { selectedAssetId, selectedAsset, openExplain } = useApp();
   const priceHistory = ASSET_PRICE_SERIES[selectedAssetId] || ASSET_PRICE_SERIES.BTC;
 
   // Prepare cumulative returns and rolling volatility series
@@ -167,34 +167,78 @@ export const QuantAnalytics: React.FC = () => {
 
       {/* Middle Two Key Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-cyan-500/30">
-          <div className="text-xs uppercase font-mono text-cyan-400 font-bold mb-1">Annualized Volatility (σ)</div>
-          <div className="text-3xl font-extrabold font-mono text-white">{selectedAsset.annualizedVol}%</div>
-          <p className="text-[11px] text-slate-400 font-mono mt-1">
+        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-cyan-500/30 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs uppercase font-mono text-cyan-400 font-bold">Annualized Volatility (σ)</span>
+              <button
+                onClick={() => openExplain('volatility')}
+                className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-cyan-300 hover:text-white bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-500/25 transition-all cursor-pointer"
+              >
+                <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+                <span>Explain</span>
+              </button>
+            </div>
+            <div className="text-3xl font-extrabold font-mono text-white">{selectedAsset.annualizedVol}%</div>
+          </div>
+          <p className="text-[11px] text-slate-400 font-mono mt-2 border-t border-[#1f1f2e] pt-2">
             252-day scaled standard deviation of daily logarithmic returns.
           </p>
         </div>
 
-        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-indigo-500/30">
-          <div className="text-xs uppercase font-mono text-indigo-400 font-bold mb-1">Sharpe Ratio (Rf = 4.5%)</div>
-          <div className="text-3xl font-extrabold font-mono text-white">{selectedAsset.sharpeRatio.toFixed(2)}</div>
-          <p className="text-[11px] text-slate-400 font-mono mt-1">
+        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-indigo-500/30 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs uppercase font-mono text-indigo-400 font-bold">Sharpe Ratio (Rf = 4.5%)</span>
+              <button
+                onClick={() => openExplain('sharpe')}
+                className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-indigo-300 hover:text-white bg-indigo-500/15 hover:bg-indigo-500/30 border border-indigo-500/25 transition-all cursor-pointer"
+              >
+                <Sparkles className="w-2.5 h-2.5 text-indigo-400" />
+                <span>Explain</span>
+              </button>
+            </div>
+            <div className="text-3xl font-extrabold font-mono text-white">{selectedAsset.sharpeRatio.toFixed(2)}</div>
+          </div>
+          <p className="text-[11px] text-slate-400 font-mono mt-2 border-t border-[#1f1f2e] pt-2">
             Excess return per unit of volatility relative to risk-free sovereign rate.
           </p>
         </div>
 
-        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-rose-500/30">
-          <div className="text-xs uppercase font-mono text-rose-400 font-bold mb-1">Maximum Peak-to-Trough Drawdown</div>
-          <div className="text-3xl font-extrabold font-mono text-rose-400">{selectedAsset.maxDrawdown}%</div>
-          <p className="text-[11px] text-slate-400 font-mono mt-1">
+        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-rose-500/30 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs uppercase font-mono text-rose-400 font-bold">Max Peak-to-Trough Drawdown</span>
+              <button
+                onClick={() => openExplain('drawdown')}
+                className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-rose-300 hover:text-white bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/25 transition-all cursor-pointer"
+              >
+                <Sparkles className="w-2.5 h-2.5 text-rose-400" />
+                <span>Explain</span>
+              </button>
+            </div>
+            <div className="text-3xl font-extrabold font-mono text-rose-400">{selectedAsset.maxDrawdown}%</div>
+          </div>
+          <p className="text-[11px] text-slate-400 font-mono mt-2 border-t border-[#1f1f2e] pt-2">
             Largest single equity drawdown during the 5-year observation period.
           </p>
         </div>
 
-        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-emerald-500/30">
-          <div className="text-xs uppercase font-mono text-emerald-400 font-bold mb-1">Sortino Ratio (Downside σ)</div>
-          <div className="text-3xl font-extrabold font-mono text-white">{(selectedAsset.sharpeRatio * 1.42).toFixed(2)}</div>
-          <p className="text-[11px] text-slate-400 font-mono mt-1">
+        <div className="p-5 rounded-xl bg-gradient-to-br from-[#141424] to-[#10101c] border border-emerald-500/30 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs uppercase font-mono text-emerald-400 font-bold">Sortino Ratio (Downside σ)</span>
+              <button
+                onClick={() => openExplain('sortino')}
+                className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-emerald-300 hover:text-white bg-emerald-500/15 hover:bg-emerald-500/30 border border-emerald-500/25 transition-all cursor-pointer"
+              >
+                <Sparkles className="w-2.5 h-2.5 text-emerald-400" />
+                <span>Explain</span>
+              </button>
+            </div>
+            <div className="text-3xl font-extrabold font-mono text-white">{(selectedAsset.sharpeRatio * 1.42).toFixed(2)}</div>
+          </div>
+          <p className="text-[11px] text-slate-400 font-mono mt-2 border-t border-[#1f1f2e] pt-2">
             Penalizes only downside volatility, preserving upside participation.
           </p>
         </div>
@@ -214,9 +258,18 @@ export const QuantAnalytics: React.FC = () => {
               Tracks drawdown severity and duration from historical highs to subsequent recovery
             </p>
           </div>
-          <span className="text-xs font-mono text-rose-400 font-bold">
-            Max Historical Dip: {selectedAsset.maxDrawdown}%
-          </span>
+          <div className="flex items-center space-x-3">
+            <span className="text-xs font-mono text-rose-400 font-bold">
+              Max Historical Dip: {selectedAsset.maxDrawdown}%
+            </span>
+            <button
+              onClick={() => openExplain('drawdown')}
+              className="inline-flex items-center space-x-1 px-2 py-1 rounded text-xs font-mono text-rose-300 hover:text-white bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/30 transition-all cursor-pointer"
+            >
+              <Sparkles className="w-3 h-3 text-rose-400" />
+              <span>Explain Drawdown</span>
+            </button>
+          </div>
         </div>
 
         <DrawdownChart data={returnsData.map((d: PricePoint) => ({ date: d.date, drawdown: d.drawdown || 0 }))} />
@@ -224,31 +277,69 @@ export const QuantAnalytics: React.FC = () => {
 
       {/* Advanced Tail Risk Statistics Matrix */}
       <div className="rounded-xl bg-[#111118]/80 border border-[#1f1f2e] p-5">
-        <h3 className="text-xs uppercase font-mono tracking-wider font-bold text-white mb-3">
-          Parametric & Non-Parametric Risk Statistics
-        </h3>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xs uppercase font-mono tracking-wider font-bold text-white">
+            Parametric & Non-Parametric Risk Statistics
+          </h3>
+          <span className="text-[10px] font-mono text-slate-400">Click Explain for deep quantitative insights</span>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-mono">
-          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133]">
-            <div className="text-slate-400 text-[10px] uppercase">Daily VaR (95% Confidence)</div>
-            <div className="text-base font-bold text-rose-400 mt-1">-3.42%</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Parametric 1-Day loss boundary</div>
-          </div>
-          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133]">
-            <div className="text-slate-400 text-[10px] uppercase">Conditional VaR / Expected Shortfall</div>
-            <div className="text-base font-bold text-rose-400 mt-1">-5.18%</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Mean loss beyond 95th percentile</div>
-          </div>
-          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133]">
-            <div className="text-slate-400 text-[10px] uppercase">Calmar Ratio (Ret / MaxDD)</div>
-            <div className="text-base font-bold text-indigo-300 mt-1">
-              {(selectedAsset.totalReturn5Y / Math.abs(selectedAsset.maxDrawdown * 5)).toFixed(2)}
+          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400 text-[10px] uppercase">Daily VaR (95%)</span>
+                <button
+                  onClick={() => openExplain('var')}
+                  className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-rose-300 hover:text-white bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/25 transition-all cursor-pointer"
+                >
+                  <Sparkles className="w-2 h-2 text-rose-400" />
+                  <span>Explain</span>
+                </button>
+              </div>
+              <div className="text-base font-bold text-rose-400 mt-1">-3.42%</div>
             </div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Annualized return to drawdown ratio</div>
+            <div className="text-[10px] text-slate-400 mt-1 pt-1 border-t border-[#1c1c2b]">Parametric 1-Day loss boundary</div>
           </div>
-          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133]">
-            <div className="text-slate-400 text-[10px] uppercase">Return Skewness & Kurtosis</div>
-            <div className="text-base font-bold text-slate-200 mt-1">+0.48 / 4.82</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Fat-tail distribution indicator</div>
+          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400 text-[10px] uppercase">Expected Shortfall</span>
+                <button
+                  onClick={() => openExplain('var')}
+                  className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-rose-300 hover:text-white bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/25 transition-all cursor-pointer"
+                >
+                  <Sparkles className="w-2 h-2 text-rose-400" />
+                  <span>Explain</span>
+                </button>
+              </div>
+              <div className="text-base font-bold text-rose-400 mt-1">-5.18%</div>
+            </div>
+            <div className="text-[10px] text-slate-400 mt-1 pt-1 border-t border-[#1c1c2b]">Mean loss beyond 95th percentile</div>
+          </div>
+          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400 text-[10px] uppercase">Calmar Ratio</span>
+                <button
+                  onClick={() => openExplain('calmar')}
+                  className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-indigo-300 hover:text-white bg-indigo-500/15 hover:bg-indigo-500/30 border border-indigo-500/25 transition-all cursor-pointer"
+                >
+                  <Sparkles className="w-2 h-2 text-indigo-400" />
+                  <span>Explain</span>
+                </button>
+              </div>
+              <div className="text-base font-bold text-indigo-300 mt-1">
+                {(selectedAsset.totalReturn5Y / Math.abs(selectedAsset.maxDrawdown * 5)).toFixed(2)}
+              </div>
+            </div>
+            <div className="text-[10px] text-slate-400 mt-1 pt-1 border-t border-[#1c1c2b]">Annualized return to drawdown ratio</div>
+          </div>
+          <div className="p-3 rounded-lg bg-[#141422] border border-[#212133] flex flex-col justify-between">
+            <div>
+              <div className="text-slate-400 text-[10px] uppercase">Return Skew & Kurtosis</div>
+              <div className="text-base font-bold text-slate-200 mt-1">+0.48 / 4.82</div>
+            </div>
+            <div className="text-[10px] text-slate-400 mt-1 pt-1 border-t border-[#1c1c2b]">Fat-tail distribution indicator</div>
           </div>
         </div>
       </div>

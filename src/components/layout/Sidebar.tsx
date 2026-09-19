@@ -13,7 +13,8 @@ import {
   Sparkles,
   ChevronRight,
   Zap,
-  Clock
+  Clock,
+  Bot
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { PageId } from '../../types';
@@ -55,7 +56,7 @@ const navSections: NavSection[] = [
 ];
 
 export const Sidebar: React.FC = () => {
-  const { activePage, setActivePage, isDemoRunning, launchDemoMode } = useApp();
+  const { activePage, setActivePage, isDemoRunning, launchDemoMode, setIsCopilotOpen } = useApp();
 
   return (
     <aside className="w-64 bg-[#0d0d15] border-r border-[#1a1a28] flex flex-col justify-between flex-shrink-0 select-none z-30 transition-all duration-300">
@@ -84,8 +85,8 @@ export const Sidebar: React.FC = () => {
           </div>
         </div>
 
-        {/* Demo Mode Button for Hackathon Judges */}
-        <div className="p-3 border-b border-[#1a1a28]">
+        {/* Action Buttons: Demo Mode & AI Copilot */}
+        <div className="p-3 border-b border-[#1a1a28] space-y-2">
           <button
             onClick={launchDemoMode}
             disabled={isDemoRunning}
@@ -101,6 +102,19 @@ export const Sidebar: React.FC = () => {
             </span>
             <span className="text-[9px] bg-white/20 text-white px-1.5 py-0.5 rounded uppercase font-mono font-bold tracking-wider">
               2-Min
+            </span>
+          </button>
+
+          <button
+            onClick={() => setIsCopilotOpen(true)}
+            className="w-full py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-between border border-cyan-500/30 bg-cyan-950/30 hover:bg-cyan-950/60 text-cyan-200 transition-all duration-200 shadow-sm hover:shadow-cyan-500/10 cursor-pointer group"
+          >
+            <span className="flex items-center space-x-2">
+              <Bot className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+              <span className="font-bold tracking-tight">Quant AI Copilot</span>
+            </span>
+            <span className="text-[9px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-mono font-bold border border-cyan-500/30">
+              OPEN
             </span>
           </button>
         </div>

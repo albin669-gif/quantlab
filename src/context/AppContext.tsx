@@ -36,6 +36,12 @@ interface AppContextType {
   launchDemoMode: () => Promise<void>;
   toastMessage: string | null;
   showToast: (msg: string) => void;
+  // Copilot & Metric Explanation
+  isCopilotOpen: boolean;
+  setIsCopilotOpen: (open: boolean) => void;
+  activeExplainMetric: string | null;
+  setActiveExplainMetric: (id: string | null) => void;
+  openExplain: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -61,6 +67,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [simulationProgress, setSimulationProgress] = useState<number>(0);
   const [isDemoRunning, setIsDemoRunning] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isCopilotOpen, setIsCopilotOpen] = useState<boolean>(false);
+  const [activeExplainMetric, setActiveExplainMetric] = useState<string | null>(null);
+
+  const openExplain = (id: string) => {
+    setActiveExplainMetric(id);
+  };
 
   const selectedAsset = AVAILABLE_ASSETS.find(a => a.id === selectedAssetId) || AVAILABLE_ASSETS[0];
 
@@ -224,6 +236,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         launchDemoMode,
         toastMessage,
         showToast,
+        isCopilotOpen,
+        setIsCopilotOpen,
+        activeExplainMetric,
+        setActiveExplainMetric,
+        openExplain,
       }}
     >
       {children}

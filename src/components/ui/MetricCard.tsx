@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowUpRight, ArrowDownRight, Info } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Info, Sparkles } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 
 interface MetricCardProps {
   title: string;
@@ -10,6 +11,8 @@ interface MetricCardProps {
   sparkline?: number[];
   sparklineColor?: string;
   tooltip?: string;
+  explainId?: string;
+  onExplain?: () => void;
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
@@ -21,7 +24,10 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   sparkline,
   sparklineColor = '#6366f1',
   tooltip,
+  explainId,
+  onExplain,
 }) => {
+  const { openExplain } = useApp();
   // Generate high quality SVG path for sparklines
   const renderSparkline = () => {
     if (!sparkline || sparkline.length < 2) return null;
@@ -80,14 +86,31 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     <div className="bg-[#101018]/90 hover:bg-[#141422] border border-[#1e1e30] hover:border-indigo-500/50 rounded-2xl p-4 transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-indigo-500/5 group flex flex-col justify-between">
       <div>
         <div className="flex items-center justify-between text-slate-400 mb-2">
-          <span className="text-[11px] uppercase font-mono tracking-wider font-semibold text-slate-400 flex items-center space-x-1">
-            <span>{title}</span>
-            {tooltip && (
-              <span title={tooltip} className="cursor-help text-slate-400 hover:text-slate-300">
-                <Info className="w-3 h-3" />
-              </span>
+          <div className="flex items-center flex-wrap gap-1.5">
+            <span className="text-[11px] uppercase font-mono tracking-wider font-semibold text-slate-400 flex items-center space-x-1">
+              <span>{title}</span>
+              {tooltip && (
+                <span title={tooltip} className="cursor-help text-slate-400 hover:text-slate-300">
+                  <Info className="w-3 h-3" />
+                </span>
+              )}
+            </span>
+            {(explainId || onExplain) && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onExplain) onExplain();
+                  else if (explainId) openExplain(explainId);
+                }}
+                className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-medium text-indigo-300 hover:text-white bg-indigo-500/15 hover:bg-indigo-500/30 border border-indigo-500/25 hover:border-indigo-500/50 transition-all cursor-pointer shadow-xs"
+                title={`Explain ${title}`}
+              >
+                <Sparkles className="w-2.5 h-2.5 text-indigo-400" />
+                <span>Explain</span>
+              </button>
             )}
-          </span>
+          </div>
           {sparkline && <div className="opacity-75 group-hover:opacity-100 transition-opacity">{renderSparkline()}</div>}
         </div>
 

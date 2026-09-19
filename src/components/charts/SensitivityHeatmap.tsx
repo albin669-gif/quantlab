@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { SensitivityCell } from '../../types';
 import { formatPct } from '../../lib/quant';
+import { Sparkles } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 
 interface SensitivityHeatmapProps {
   matrix: SensitivityCell[];
@@ -15,6 +17,7 @@ export const SensitivityHeatmap: React.FC<SensitivityHeatmapProps> = ({
   currentSlow,
   onSelectParam,
 }) => {
+  const { openExplain } = useApp();
   const [metricView, setMetricView] = useState<'return' | 'sharpe'>('return');
 
   const fastRows = [10, 15, 20, 25, 30];
@@ -46,12 +49,22 @@ export const SensitivityHeatmap: React.FC<SensitivityHeatmapProps> = ({
     <div className="rounded-xl bg-[#111118]/90 border border-[#1f1f2e] p-5">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-[#1b1b28]">
         <div>
-          <h3 className="text-sm font-bold text-white tracking-tight flex items-center space-x-2">
-            <span>Parameter Robustness Heatmap</span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              OVERFITTING RESISTANCE
-            </span>
-          </h3>
+          <div className="flex items-center space-x-2">
+            <h3 className="text-sm font-bold text-white tracking-tight flex items-center space-x-2">
+              <span>Parameter Robustness Heatmap</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                OVERFITTING RESISTANCE
+              </span>
+            </h3>
+            <button
+              onClick={() => openExplain('robustness')}
+              className="inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[10px] font-mono text-cyan-300 hover:text-white bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-500/30 transition-all cursor-pointer"
+              title="Explain Parameter Robustness Heatmap"
+            >
+              <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+              <span>Explain</span>
+            </button>
+          </div>
           <p className="text-xs text-slate-400 font-mono mt-0.5">
             Cross-testing Fast MA vs Slow MA surface prevents curve-fitting anomalies
           </p>

@@ -7,7 +7,8 @@ import {
   ChevronDown,
   Layers,
   Activity,
-  Compass
+  Compass,
+  Bot
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { AVAILABLE_ASSETS } from '../../data/mockData';
@@ -24,7 +25,8 @@ export const TopBar: React.FC = () => {
     endYear,
     setEndYear,
     toastMessage,
-    activePage
+    activePage,
+    setIsCopilotOpen
   } = useApp();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -159,6 +161,16 @@ export const TopBar: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Copilot Action Button */}
+          <button
+            onClick={() => setIsCopilotOpen(true)}
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#151526] hover:bg-[#1c1c32] border border-cyan-500/35 hover:border-cyan-400 text-cyan-300 hover:text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+            title="Open Quantitative AI Copilot"
+          >
+            <Bot className="w-3.5 h-3.5 text-cyan-400" />
+            <span>AI Copilot</span>
+          </button>
 
           {/* Primary Action Button */}
           <button

@@ -3,8 +3,10 @@ import { CorrelationHeatmap } from '../components/charts/CorrelationHeatmap';
 import { RollingCorrelationChart } from '../components/charts/RollingCorrelationChart';
 import { AssetId } from '../types';
 import { GitMerge, Sparkles, AlertCircle } from 'lucide-react';
+import { useApp } from '../context/AppContext';
 
 export const Correlation: React.FC = () => {
+  const { openExplain } = useApp();
   const [selectedPair, setSelectedPair] = useState<[AssetId, AssetId]>(['BTC', 'NVDA']);
 
   const handleSelectPair = (a1: AssetId, a2: AssetId) => {
@@ -100,6 +102,14 @@ export const Correlation: React.FC = () => {
               <span className="w-2.5 h-2.5 rounded bg-indigo-600 border border-indigo-400" />
               <span className="text-slate-400">&gt; 0.50 (High Co-movement)</span>
             </span>
+
+            <button
+              onClick={() => openExplain('correlation')}
+              className="inline-flex items-center space-x-1 px-2 py-1 rounded text-xs font-mono text-indigo-300 hover:text-white bg-indigo-500/15 hover:bg-indigo-500/30 border border-indigo-500/30 transition-all cursor-pointer ml-2"
+            >
+              <Sparkles className="w-3 h-3 text-indigo-400" />
+              <span>Explain Correlation</span>
+            </button>
           </div>
         </div>
 
@@ -116,9 +126,18 @@ export const Correlation: React.FC = () => {
             <Sparkles className="w-4 h-4 text-amber-300" />
             <span className="text-xs font-mono uppercase tracking-wider font-bold">Quantitative Correlation Insight Engine</span>
           </div>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-200 border border-indigo-500/30">
-            {insight.diversification}
-          </span>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => openExplain('correlation')}
+              className="inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[10px] font-mono text-cyan-300 hover:text-white bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-500/30 transition-all cursor-pointer"
+            >
+              <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+              <span>Explain Metric</span>
+            </button>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-200 border border-indigo-500/30">
+              {insight.diversification}
+            </span>
+          </div>
         </div>
 
         <h4 className="text-base font-bold text-white tracking-tight mt-1">

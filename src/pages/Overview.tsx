@@ -124,6 +124,7 @@ export const Overview: React.FC = () => {
             sparkline={backtestResult?.equityCurve.slice(-15).map((e: any) => e.strategy)}
             sparklineColor="#10b981"
             tooltip="Simulated portfolio equity with reinvestment"
+            explainId="strategy-return"
           />
 
           <MetricCard
@@ -135,6 +136,7 @@ export const Overview: React.FC = () => {
             sparkline={[28, 30, 35, 32, 29, 31, 33, 32]}
             sparklineColor="#06b6d4"
             tooltip="Annualized standard deviation of daily returns"
+            explainId="volatility"
           />
 
           <MetricCard
@@ -144,6 +146,7 @@ export const Overview: React.FC = () => {
             changeType={sharpe > 1.2 ? 'positive' : 'warning'}
             subtext="Rf = 4.50% (US T-Bills)"
             tooltip="Risk-adjusted excess return per unit of volatility"
+            explainId="sharpe"
           />
 
           <MetricCard
@@ -155,6 +158,7 @@ export const Overview: React.FC = () => {
             sparkline={[-5, -12, -18, -21.8, -14, -8, -4]}
             sparklineColor="#f43f5e"
             tooltip="Maximum observed drawdown during observation period"
+            explainId="drawdown"
           />
         </div>
       </div>

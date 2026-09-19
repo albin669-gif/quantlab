@@ -10,12 +10,13 @@ import {
   TrendingUp,
   Scale,
   DollarSign,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from 'lucide-react';
 import { TradeRecord } from '../types';
 
 export const Backtesting: React.FC = () => {
-  const { backtestResult, selectedAsset, setActivePage } = useApp();
+  const { backtestResult, selectedAsset, setActivePage, openExplain } = useApp();
   const [tradeFilter, setTradeFilter] = useState<'ALL' | 'WIN' | 'LOSS'>('ALL');
   const [activeTab, setActiveTab] = useState<'equity' | 'drawdown'>('equity');
 
@@ -116,29 +117,77 @@ export const Backtesting: React.FC = () => {
             <div className="text-[10px] text-emerald-400 font-mono mt-0.5 font-semibold">Net Proceeds</div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238]">
-            <div className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Total Return</div>
-            <div className={`text-base font-bold font-mono mt-1 ${totalReturnPct >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-              {formatPct(totalReturnPct)}
+          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Total Return</span>
+                <button
+                  onClick={() => openExplain('strategy-return')}
+                  className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-emerald-300 hover:text-white bg-emerald-500/15 hover:bg-emerald-500/30 border border-emerald-500/25 transition-all cursor-pointer"
+                  title="Explain Strategy Return"
+                >
+                  <Sparkles className="w-2 h-2 text-emerald-400" />
+                  <span>Explain</span>
+                </button>
+              </div>
+              <div className={`text-base font-bold font-mono mt-1 ${totalReturnPct >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                {formatPct(totalReturnPct)}
+              </div>
             </div>
             <div className="text-[10px] text-indigo-300 font-mono mt-0.5">Alpha: {formatPct(alphaPct)}</div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238]">
-            <div className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Sharpe Ratio</div>
-            <div className="text-base font-bold text-white font-mono mt-1">{sharpeRatio.toFixed(2)}</div>
+          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Sharpe Ratio</span>
+                <button
+                  onClick={() => openExplain('sharpe')}
+                  className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-indigo-300 hover:text-white bg-indigo-500/15 hover:bg-indigo-500/30 border border-indigo-500/25 transition-all cursor-pointer"
+                  title="Explain Sharpe Ratio"
+                >
+                  <Sparkles className="w-2 h-2 text-indigo-400" />
+                  <span>Explain</span>
+                </button>
+              </div>
+              <div className="text-base font-bold text-white font-mono mt-1">{sharpeRatio.toFixed(2)}</div>
+            </div>
             <div className="text-[10px] text-slate-400 font-mono mt-0.5">Bench: {benchmarkSharpe.toFixed(2)}</div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238]">
-            <div className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Volatility</div>
-            <div className="text-base font-bold text-cyan-400 font-mono mt-1">{annualizedVol}%</div>
+          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Volatility</span>
+                <button
+                  onClick={() => openExplain('volatility')}
+                  className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-cyan-300 hover:text-white bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-500/25 transition-all cursor-pointer"
+                  title="Explain Volatility"
+                >
+                  <Sparkles className="w-2 h-2 text-cyan-400" />
+                  <span>Explain</span>
+                </button>
+              </div>
+              <div className="text-base font-bold text-cyan-400 font-mono mt-1">{annualizedVol}%</div>
+            </div>
             <div className="text-[10px] text-slate-400 font-mono mt-0.5">Bench: {benchmarkVol}%</div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238]">
-            <div className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Max Drawdown</div>
-            <div className="text-base font-bold text-rose-400 font-mono mt-1">{maxDrawdownPct}%</div>
+          <div className="p-3.5 rounded-xl bg-[#141422] border border-[#222238] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-slate-400 uppercase font-mono font-semibold">Max Drawdown</span>
+                <button
+                  onClick={() => openExplain('drawdown')}
+                  className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[9px] font-mono text-rose-300 hover:text-white bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/25 transition-all cursor-pointer"
+                  title="Explain Drawdown"
+                >
+                  <Sparkles className="w-2 h-2 text-rose-400" />
+                  <span>Explain</span>
+                </button>
+              </div>
+              <div className="text-base font-bold text-rose-400 font-mono mt-1">{maxDrawdownPct}%</div>
+            </div>
             <div className="text-[10px] text-slate-400 font-mono mt-0.5">Bench: {benchmarkMaxDrawdownPct}%</div>
           </div>
 
@@ -166,12 +215,22 @@ export const Backtesting: React.FC = () => {
       <div className="rounded-2xl bg-[#101018]/95 border border-[#1e1e30] p-6 shadow-2xl">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-5 pb-4 border-b border-[#1a1a2a]">
           <div>
-            <h3 className="text-base font-bold text-white tracking-tight flex items-center space-x-2">
-              <span>Equity Curve: Strategy Portfolio vs Buy & Hold Benchmark</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                CAPITAL REINVESTED
-              </span>
-            </h3>
+            <div className="flex items-center space-x-2.5">
+              <h3 className="text-base font-bold text-white tracking-tight flex items-center space-x-2">
+                <span>Equity Curve: Strategy Portfolio vs Buy & Hold Benchmark</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                  CAPITAL REINVESTED
+                </span>
+              </h3>
+              <button
+                onClick={() => openExplain('equity-curve')}
+                className="inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[10px] font-mono text-cyan-300 hover:text-white bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-500/30 transition-all cursor-pointer"
+                title="Explain Equity Curve"
+              >
+                <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+                <span>Explain Chart</span>
+              </button>
+            </div>
             <p className="text-xs text-slate-400 font-mono mt-0.5">
               Simulated portfolio value progression over time comparing the dynamic algorithmic model against passive holding
             </p>

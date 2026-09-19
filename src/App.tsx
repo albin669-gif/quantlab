@@ -4,6 +4,8 @@ import { Sidebar } from './components/layout/Sidebar';
 import { TopBar } from './components/layout/TopBar';
 import { MobileNav } from './components/layout/MobileNav';
 import { SimulationModal } from './components/ui/SimulationModal';
+import { QuantCopilot } from './components/copilot/QuantCopilot';
+import { ExplainModal } from './components/ui/ExplainModal';
 
 import { Overview } from './pages/Overview';
 import { MarketExplorer } from './pages/MarketExplorer';
@@ -15,7 +17,7 @@ import { MarketRegimes } from './pages/MarketRegimes';
 import { Reports } from './pages/Reports';
 
 const MainLayout: React.FC = () => {
-  const { activePage } = useApp();
+  const { activePage, activeExplainMetric, setActiveExplainMetric } = useApp();
 
   const renderActivePage = () => {
     switch (activePage) {
@@ -63,6 +65,15 @@ const MainLayout: React.FC = () => {
 
       {/* High-tech Simulation Progress Modal */}
       <SimulationModal />
+
+      {/* Quant AI Copilot Drawer */}
+      <QuantCopilot />
+
+      {/* Structured 4-Part Metric Explanation Modal */}
+      <ExplainModal
+        metricId={activeExplainMetric}
+        onClose={() => setActiveExplainMetric(null)}
+      />
     </div>
   );
 };

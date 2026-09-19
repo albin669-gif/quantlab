@@ -6,6 +6,7 @@ import { MobileNav } from './components/layout/MobileNav';
 import { SimulationModal } from './components/ui/SimulationModal';
 import { QuantCopilot } from './components/copilot/QuantCopilot';
 import { ExplainModal } from './components/ui/ExplainModal';
+import { Bot } from 'lucide-react';
 
 import { Overview } from './pages/Overview';
 import { MarketExplorer } from './pages/MarketExplorer';
@@ -17,7 +18,7 @@ import { MarketRegimes } from './pages/MarketRegimes';
 import { Reports } from './pages/Reports';
 
 const MainLayout: React.FC = () => {
-  const { activePage, activeExplainMetric, setActiveExplainMetric } = useApp();
+  const { activePage, activeExplainMetric, setActiveExplainMetric, isCopilotOpen, setIsCopilotOpen } = useApp();
 
   const renderActivePage = () => {
     switch (activePage) {
@@ -65,6 +66,19 @@ const MainLayout: React.FC = () => {
 
       {/* High-tech Simulation Progress Modal */}
       <SimulationModal />
+
+      {/* Floating Quick Copilot Trigger (Bottom-Right, Always Visible & Unmissable) */}
+      {!isCopilotOpen && (
+        <button
+          onClick={() => setIsCopilotOpen(true)}
+          className="fixed bottom-6 right-6 z-40 flex items-center space-x-2.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-cyan-600 via-indigo-600 to-indigo-700 hover:from-cyan-500 hover:to-indigo-600 text-white text-xs font-bold shadow-2xl shadow-cyan-500/25 border border-cyan-400/40 hover:scale-105 transition-all cursor-pointer group animate-pulse hover:animate-none"
+          title="Open Quant AI Copilot"
+        >
+          <Bot className="w-4 h-4 text-cyan-200 group-hover:scale-110 transition-transform" />
+          <span className="font-mono tracking-wide">Ask Quant AI Copilot</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block ml-1 shadow-sm" />
+        </button>
+      )}
 
       {/* Quant AI Copilot Drawer */}
       <QuantCopilot />

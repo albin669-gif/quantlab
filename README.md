@@ -4,6 +4,7 @@ A quantitative finance terminal and algorithmic research platform built for inst
 
 ![QuantLab Terminal Banner](https://raw.githubusercontent.com/albin669-gif/quantlab/main/public/favicon.svg)
 
+https://albin669-gif.github.io/quantlab/
 ---
 
 ## 🏛️ Project Overview
